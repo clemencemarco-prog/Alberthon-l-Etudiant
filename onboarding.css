@@ -1,0 +1,409 @@
+/* ============================================================
+   Onboarding wizard + modale auth + mini-card profil
+   ============================================================ */
+
+/* ---------- Carte ORI spéciale (avec boutons / inputs) ---------- */
+.ob-bubble {
+    max-width: 540px;
+    background-color: var(--color-bubble) !important;
+}
+
+.ob-step-header {
+    margin-bottom: 12px;
+}
+
+.ob-progress {
+    display: inline-block;
+    background-color: var(--color-ori-accent);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 8px;
+}
+
+.ob-question {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.4;
+    margin: 6px 0 4px;
+}
+
+.ob-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-text);
+    margin: 4px 0;
+}
+.ob-text-secondary {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin: 4px 0 0;
+}
+.ob-hint {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin: 4px 0 8px;
+}
+
+/* ---------- Boutons ---------- */
+.ob-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.ob-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    text-align: left;
+    padding: 10px 14px;
+    background-color: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+.ob-btn:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+.ob-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+.ob-btn.is-selected {
+    background-color: rgba(226, 75, 74, 0.08);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    opacity: 1 !important;
+}
+
+.ob-btn--primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+    justify-content: center;
+}
+.ob-btn--primary:hover:not(:disabled) {
+    background-color: #c93f3e;
+    border-color: #c93f3e;
+    color: #fff;
+}
+
+/* ---------- Texte libre ---------- */
+.ob-text-input {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    align-items: center;
+}
+.ob-input {
+    flex: 1;
+    padding: 9px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 14px;
+    background-color: #fff;
+}
+.ob-input:focus {
+    outline: none;
+    border-color: var(--color-ori-accent);
+    box-shadow: 0 0 0 3px rgba(79, 175, 215, 0.15);
+}
+.ob-text-input .ob-btn {
+    padding: 9px 18px;
+}
+
+.ob-or {
+    margin: 12px 0 4px;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* ---------- Multi-select ---------- */
+.ob-multiselect {
+    margin-top: 12px;
+}
+.ob-multiselect-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+.ob-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.ob-checkbox:hover {
+    border-color: var(--color-ori-accent);
+}
+.ob-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+.ob-checkbox:has(input:checked) {
+    border-color: var(--color-primary);
+    background-color: rgba(226, 75, 74, 0.05);
+}
+
+/* ---------- Synthèse ---------- */
+.ob-synthese {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.ob-synthese-list {
+    list-style: none;
+    margin: 8px 0;
+    padding: 0;
+}
+.ob-synthese-list li {
+    padding: 8px 12px;
+    background-color: #fff;
+    border-left: 3px solid var(--color-ori-accent);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--color-text);
+}
+
+/* ============================================================
+   Modale auth (login/register)
+   ============================================================ */
+
+.auth-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(28, 28, 26, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+.auth-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.2s ease;
+}
+
+.auth-modal {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    position: relative;
+    transform: translateY(8px);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.auth-overlay.is-open .auth-modal {
+    transform: translateY(0);
+}
+
+.auth-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color 0.15s ease;
+}
+.auth-close:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+    color: var(--color-text);
+}
+
+.auth-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 6px;
+}
+.auth-subtitle {
+    font-size: 13.5px;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0 0 20px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.auth-field > span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.auth-field input {
+    padding: 10px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    font-size: 14px;
+    background-color: #fff;
+}
+.auth-field input:focus {
+    outline: none;
+    border-color: var(--color-ori-accent);
+    box-shadow: 0 0 0 3px rgba(79, 175, 215, 0.15);
+}
+.auth-hint {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+.auth-error {
+    background-color: rgba(226, 75, 74, 0.1);
+    border-left: 3px solid var(--color-primary);
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: var(--color-primary);
+    font-size: 13px;
+    margin: 0;
+}
+
+.auth-submit {
+    padding: 12px 16px;
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+.auth-submit:hover:not(:disabled) {
+    background-color: #c93f3e;
+}
+.auth-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.auth-switch {
+    margin: 18px 0 0;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    text-align: center;
+}
+.auth-switch-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 4px;
+    font-size: 13px;
+    text-decoration: underline;
+}
+.auth-switch-btn:hover {
+    color: #c93f3e;
+}
+
+/* ============================================================
+   Mini-card profil (en haut du chat)
+   ============================================================ */
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background-color: #fff;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 13px;
+    color: var(--color-text);
+    flex-wrap: wrap;
+}
+
+.profile-card__icon {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: rgba(79, 175, 215, 0.15);
+    color: var(--color-ori-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.profile-card__summary {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+.profile-card__summary strong {
+    font-weight: 600;
+    color: var(--color-ori-accent);
+}
+
+.profile-card__actions {
+    display: flex;
+    gap: 6px;
+}
+
+.profile-card__btn {
+    padding: 5px 11px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background-color: #fff;
+    color: var(--color-text);
+    font-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+.profile-card__btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
